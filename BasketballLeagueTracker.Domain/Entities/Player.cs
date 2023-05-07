@@ -41,7 +41,7 @@ namespace BasketballLeagueTracker.Domain.Entities
         public int? TeamId { get; set; }
         public Team? Team { get; set; }
 
-        //public ICollection<FavouritePlayer> FavouritePlayers { get; set; }
+        public ICollection<FavouritePlayer> FavouritePlayers { get; set; }
     }
 
 }

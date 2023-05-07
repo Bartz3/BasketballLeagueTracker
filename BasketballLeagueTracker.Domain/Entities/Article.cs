@@ -12,7 +12,7 @@ namespace BasketballLeagueTracker.Domain.Entities
         [MaxLength(255)]
         public string Title { get; set; }
         public string Content { get; set; }
-        public DateTime DateCreated { get; set; }
+        public DateTime DateCreated { get; set; } = DateTime.UtcNow;
 
         public int LeagueId { get; set; }
         public League League { get; set; }

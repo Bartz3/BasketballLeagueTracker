@@ -9,10 +9,10 @@ namespace BasketballLeagueTracker.Domain.Entities
     public class Comment
     {
         public int CommentId { get; set; }
+        [Display(Name ="Treść komentarza")]
         public string Content { get; set; }
-        public DateTime DateAdded { get; set; }
+        public DateTime DateAdded { get; set; }= DateTime.UtcNow;
 
-        public int UserId { get; set; }
         public ApplicationUser User { get; set; }
 
         public ICollection<UserCommentRating> Ratings { get; set; }

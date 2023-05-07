@@ -1,4 +1,5 @@
 ﻿using BasketballLeagueTracker.Domain.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,12 +9,13 @@ using System.Threading.Tasks;
 
 namespace BasketballLeagueTracker.Infrastructure.Persistence
 {
-    public class BasketballLeagueTrackerDbContext :DbContext
+    public class BasketballLeagueTrackerDbContext :IdentityDbContext
     {
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+
+        public BasketballLeagueTrackerDbContext(DbContextOptions<BasketballLeagueTrackerDbContext> options) : base(options) 
         {
-            optionsBuilder.UseSqlServer("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=D:\\repos\\BasketballLeagueTracker\\BasketballLeagueTracker.Infrastructure\\Persistence\\BasketDb.mdf;Integrated Security=True");
+
         }
 
         public DbSet<League> Leagues { get; set; }
@@ -21,10 +23,22 @@ namespace BasketballLeagueTracker.Infrastructure.Persistence
         public DbSet<Player> Players { get; set; }
         public DbSet<Stadium> Stadiums { get; set; }
         public DbSet<SeasonStatistics> SeasonStatistics { get; set; }
-        public DbSet<ApplicationUser> Users { get; set; }
+
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+        public DbSet<Article> Articles { get; set; }
+        public DbSet<ArticleImage> ArticaleImages { get; set; }
+
+        public DbSet<FavouritePlayer> FavouritePlayers { get; set; }
+        public DbSet<FavouriteTeam> FavouriteTeams { get; set; }
+
+        //public DbSet<Comment> Comments { get; set; }
+        //public DbSet<Game> Games { get; set; }
+        //public DbSet<GamePlayerStats> GamePlayerStats { get; set; }
+        //public DbSet<UserCommentRating> UserCommentRatings { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             // Jedna liga ma wiele zespołów
             modelBuilder.Entity<League>()
                 .HasMany(l => l.Teams)
@@ -61,7 +75,30 @@ namespace BasketballLeagueTracker.Infrastructure.Persistence
                 .WithOne(i => i.Article)
                 .OnDelete(DeleteBehavior.NoAction);
 
-            //base.OnModelCreating(modelBuilder);
+            // Jedena pozycja ulubionego zawodnika posiada jedno odwołanie do zawodnika, jeden zawodnik może być ulubionym zawodnikiem wielu użytkowników
+            modelBuilder.Entity<FavouritePlayer>()
+                .HasOne(fp => fp.Player)
+                .WithMany(p => p.FavouritePlayers)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            // Jedena pozycja ulubionego zawodnika posiada jedno odwołanie do użytkownika, użytkownik może mieć wiele ulubionych zawodników
+            modelBuilder.Entity<FavouritePlayer>()
+                 .HasOne(fp => fp.User)
+                 .WithMany(u => u.FavouritePlayers)
+                 .OnDelete(DeleteBehavior.Cascade);
+
+            // Jedna pozycja ulubionej drużyny posiada jedno odwołanie do drużyny, drużyna może być ulubioną drużyną wielu użytkowników
+            modelBuilder.Entity<FavouriteTeam>()
+                .HasOne(ft => ft.Team)
+                .WithMany(t => t.FavouriteTeams)
+                .OnDelete(DeleteBehavior.NoAction);
+            // Jedena pozycja ulubionej drużyny posiada jedno odwołanie do drużyny, użytkownik może mieć wiele ulubionych drużyn
+            modelBuilder.Entity<FavouriteTeam>()
+                .HasOne(ft => ft.User)
+                .WithMany(u => u.FavouriteTeams)
+                .OnDelete(DeleteBehavior.Cascade);
+
+
         }
     }
 }

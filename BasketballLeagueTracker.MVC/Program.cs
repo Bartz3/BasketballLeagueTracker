@@ -1,10 +1,25 @@
+using BasketballLeagueTracker.Domain.Entities;
+using BasketballLeagueTracker.Infrastructure.Extensions;
+using BasketballLeagueTracker.Infrastructure.Persistence;
+using BasketballLeagueTracker.Infrastructure.Seeders;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddInfrastracture(builder.Configuration); // Register database
+
+builder.Services.RegisterApplicationUser(); // Register app user 
+
+
 var app = builder.Build();
 
+var scope = app.Services.CreateScope();
+var seeder= scope.ServiceProvider.GetRequiredService<TeamSeeder>();
+await seeder.Seed();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
@@ -23,5 +38,7 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapRazorPages(); // RazorPages mapping
 
 app.Run();

@@ -13,7 +13,7 @@ namespace BasketballLeagueTracker.Domain.Entities
         public bool Rating { get; set; }
         public DateTime DateAdded { get; set; }
 
-        public int UserId { get; set; }
+        //public int UserId { get; set; }
         public ApplicationUser User { get; set; }
 
         public int CommentId { get; set; }

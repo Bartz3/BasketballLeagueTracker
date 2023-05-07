@@ -6,8 +6,19 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
-  <ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.5" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.5">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.13" />
+	</ItemGroup>
+
+
+	<ItemGroup>
     <ProjectReference Include="..\BasketballLeagueTracker.Application\BasketballLeagueTracker.Application.csproj" />
+    <ProjectReference Include="..\BasketballLeagueTracker.Infrastructure\BasketballLeagueTracker.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
