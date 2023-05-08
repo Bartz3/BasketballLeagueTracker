@@ -21,6 +21,7 @@ namespace BasketballLeagueTracker.Domain.Entities
         public ICollection<FavouriteTeam> FavouriteTeams { get; set; }
 
         public ICollection<Comment> Comments { get; set; }
+        public ICollection<UserCommentRating> UserCommentRaitings { get; set; }
     }
 
     //[Key]

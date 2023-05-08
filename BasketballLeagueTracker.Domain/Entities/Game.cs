@@ -26,15 +26,11 @@ namespace BasketballLeagueTracker.Domain.Entities
         public int HomeTeamScore { get; set; }
         public int AwayTeamScore { get; set; }
 
-        [ForeignKey("HomeTeam")]
         public int? HomeTeamId { get; set; }
-        //[ForeignKey("AwayTeam")]
-        //public int? AwayTeamId { get; set; }
+        public int? AwayTeamId { get; set; }
 
-        public virtual Team HomeTeam { get; set; }
-        //public virtual Team AwayTeam { get; set; }
-        //public Team HomeTeam { get; set; }
-        //public Team AwayTeam { get; set; }
+        public Team HomeTeam { get; set; }
+        public Team AwayTeam { get; set; }
 
         public int LeagueId { get; set; }
         public League League { get; set; }

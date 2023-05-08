@@ -14,6 +14,7 @@ builder.Services.AddInfrastracture(builder.Configuration); // Register database
 
 builder.Services.RegisterApplicationUser(); // Register app user 
 
+builder.Services.AddScoped<UserManager<IdentityUser>>();
 
 var app = builder.Build();
 
@@ -39,6 +40,7 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-app.MapRazorPages(); // RazorPages mapping
+app.MapRazorPages(); // RazorPages mapping -> Identity is working on Razor Pages
 
 app.Run();
+//Entities added to DB, IServiceCollection added, Connection String to DB added

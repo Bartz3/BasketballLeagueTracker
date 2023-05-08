@@ -17,13 +17,16 @@ namespace BasketballLeagueTracker.Infrastructure.Extensions
     {
         public static void AddInfrastracture(this IServiceCollection services,IConfiguration configuration )
         {
+            services.AddRazorPages();
+
+
             services.AddDbContext<BasketballLeagueTrackerDbContext>(options => options.UseSqlServer
                 (configuration.GetConnectionString("BasketballLeagueTrackerCS"))); // Database register
 
             services.AddScoped<TeamSeeder>();
         }
         public static void RegisterApplicationUser(this IServiceCollection services) {
-            services.AddIdentity<ApplicationUser,IdentityRole>()
+            services.AddIdentity<IdentityUser,IdentityRole>()
                 .AddEntityFrameworkStores<BasketballLeagueTrackerDbContext>()
                 .AddDefaultTokenProviders();
         }

@@ -11,7 +11,7 @@ namespace BasketballLeagueTracker.Domain.Entities
         public int UserCommentRatingId { get; set; }
 
         public bool Rating { get; set; }
-        public DateTime DateAdded { get; set; }
+        public DateTime DateAdded { get; set; }= DateTime.UtcNow;
 
         //public int UserId { get; set; }
         public ApplicationUser User { get; set; }

@@ -83,6 +83,32 @@ namespace BasketballLeagueTracker.Infrastructure.Migrations
                     b.ToTable("ArticaleImages");
                 });
 
+            modelBuilder.Entity("BasketballLeagueTracker.Domain.Entities.Comment", b =>
+                {
+                    b.Property<int>("CommentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CommentId"));
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateAdded")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("CommentId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Comments");
+                });
+
             modelBuilder.Entity("BasketballLeagueTracker.Domain.Entities.FavouritePlayer", b =>
                 {
                     b.Property<int>("FavouritePlayerId")
@@ -129,6 +155,104 @@ namespace BasketballLeagueTracker.Infrastructure.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("FavouriteTeams");
+                });
+
+            modelBuilder.Entity("BasketballLeagueTracker.Domain.Entities.Game", b =>
+                {
+                    b.Property<int>("GameId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("GameId"));
+
+                    b.Property<int?>("AwayTeamId")
+                        .IsRequired()
+                        .HasColumnType("int");
+
+                    b.Property<int>("AwayTeamScore")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("GameDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("HomeTeamId")
+                        .IsRequired()
+                        .HasColumnType("int");
+
+                    b.Property<int>("HomeTeamScore")
+                        .HasColumnType("int");
+
+                    b.Property<int>("LeagueId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("GameId");
+
+                    b.HasIndex("AwayTeamId");
+
+                    b.HasIndex("HomeTeamId");
+
+                    b.HasIndex("LeagueId");
+
+                    b.ToTable("Games");
+                });
+
+            modelBuilder.Entity("BasketballLeagueTracker.Domain.Entities.GamePlayerStats", b =>
+                {
+                    b.Property<int>("GamePlayerStatsId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("GamePlayerStatsId"));
+
+                    b.Property<int?>("Assists")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Blocks")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("DefensiveRebounds")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Fouls")
+                        .HasColumnType("int");
+
+                    b.Property<int>("GameId")
+                        .HasColumnType("int");
+
+                    b.Property<bool?>("IsOnBench")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("OffensiveRebounds")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PlayerId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Points")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Rebounds")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Steals")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TimeSpend")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Turnovers")
+                        .HasColumnType("int");
+
+                    b.HasKey("GamePlayerStatsId");
+
+                    b.HasIndex("GameId");
+
+                    b.HasIndex("PlayerId");
+
+                    b.ToTable("GamePlayerStats");
                 });
 
             modelBuilder.Entity("BasketballLeagueTracker.Domain.Entities.League", b =>
@@ -317,6 +441,36 @@ namespace BasketballLeagueTracker.Infrastructure.Migrations
                         .HasFilter("[StadiumId] IS NOT NULL");
 
                     b.ToTable("Teams");
+                });
+
+            modelBuilder.Entity("BasketballLeagueTracker.Domain.Entities.UserCommentRating", b =>
+                {
+                    b.Property<int>("UserCommentRatingId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserCommentRatingId"));
+
+                    b.Property<int>("CommentId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DateAdded")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("Rating")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("UserCommentRatingId");
+
+                    b.HasIndex("CommentId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserCommentRatings");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -568,6 +722,17 @@ namespace BasketballLeagueTracker.Infrastructure.Migrations
                     b.Navigation("Article");
                 });
 
+            modelBuilder.Entity("BasketballLeagueTracker.Domain.Entities.Comment", b =>
+                {
+                    b.HasOne("BasketballLeagueTracker.Domain.Entities.ApplicationUser", "User")
+                        .WithMany("Comments")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("BasketballLeagueTracker.Domain.Entities.FavouritePlayer", b =>
                 {
                     b.HasOne("BasketballLeagueTracker.Domain.Entities.Player", "Player")
@@ -604,6 +769,52 @@ namespace BasketballLeagueTracker.Infrastructure.Migrations
                     b.Navigation("Team");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("BasketballLeagueTracker.Domain.Entities.Game", b =>
+                {
+                    b.HasOne("BasketballLeagueTracker.Domain.Entities.Team", "AwayTeam")
+                        .WithMany("AwayGames")
+                        .HasForeignKey("AwayTeamId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("BasketballLeagueTracker.Domain.Entities.Team", "HomeTeam")
+                        .WithMany("HomeGames")
+                        .HasForeignKey("HomeTeamId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("BasketballLeagueTracker.Domain.Entities.League", "League")
+                        .WithMany("Games")
+                        .HasForeignKey("LeagueId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("AwayTeam");
+
+                    b.Navigation("HomeTeam");
+
+                    b.Navigation("League");
+                });
+
+            modelBuilder.Entity("BasketballLeagueTracker.Domain.Entities.GamePlayerStats", b =>
+                {
+                    b.HasOne("BasketballLeagueTracker.Domain.Entities.Game", "Game")
+                        .WithMany("GamePlayerStats")
+                        .HasForeignKey("GameId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("BasketballLeagueTracker.Domain.Entities.Player", "Player")
+                        .WithMany()
+                        .HasForeignKey("PlayerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Game");
+
+                    b.Navigation("Player");
                 });
 
             modelBuilder.Entity("BasketballLeagueTracker.Domain.Entities.League", b =>
@@ -663,6 +874,25 @@ namespace BasketballLeagueTracker.Infrastructure.Migrations
                     b.Navigation("Stadium");
                 });
 
+            modelBuilder.Entity("BasketballLeagueTracker.Domain.Entities.UserCommentRating", b =>
+                {
+                    b.HasOne("BasketballLeagueTracker.Domain.Entities.Comment", "Comment")
+                        .WithMany("Ratings")
+                        .HasForeignKey("CommentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BasketballLeagueTracker.Domain.Entities.ApplicationUser", "User")
+                        .WithMany("UserCommentRaitings")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Comment");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -719,8 +949,20 @@ namespace BasketballLeagueTracker.Infrastructure.Migrations
                     b.Navigation("Images");
                 });
 
+            modelBuilder.Entity("BasketballLeagueTracker.Domain.Entities.Comment", b =>
+                {
+                    b.Navigation("Ratings");
+                });
+
+            modelBuilder.Entity("BasketballLeagueTracker.Domain.Entities.Game", b =>
+                {
+                    b.Navigation("GamePlayerStats");
+                });
+
             modelBuilder.Entity("BasketballLeagueTracker.Domain.Entities.League", b =>
                 {
+                    b.Navigation("Games");
+
                     b.Navigation("SeasonStatistics");
 
                     b.Navigation("Teams");
@@ -739,7 +981,11 @@ namespace BasketballLeagueTracker.Infrastructure.Migrations
 
             modelBuilder.Entity("BasketballLeagueTracker.Domain.Entities.Team", b =>
                 {
+                    b.Navigation("AwayGames");
+
                     b.Navigation("FavouriteTeams");
+
+                    b.Navigation("HomeGames");
 
                     b.Navigation("Players");
 
@@ -750,9 +996,13 @@ namespace BasketballLeagueTracker.Infrastructure.Migrations
                 {
                     b.Navigation("Articles");
 
+                    b.Navigation("Comments");
+
                     b.Navigation("FavouritePlayers");
 
                     b.Navigation("FavouriteTeams");
+
+                    b.Navigation("UserCommentRaitings");
                 });
 #pragma warning restore 612, 618
         }

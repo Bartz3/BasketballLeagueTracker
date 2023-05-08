@@ -29,8 +29,8 @@ namespace BasketballLeagueTracker.Domain.Entities
         public ICollection<SeasonStatistics> SeasonStatistics { get; set; }
         public ICollection<FavouriteTeam> FavouriteTeams { get; set; }
 
-        //public ICollection<Game>HomeGames { get; set; }
-        ////public ICollection<Game>AwayGames { get; set; }
+        public ICollection<Game>HomeGames { get; set; }
+        public ICollection<Game>AwayGames { get; set; }
 
     }
 }

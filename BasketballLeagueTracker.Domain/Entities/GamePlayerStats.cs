@@ -10,20 +10,20 @@ namespace BasketballLeagueTracker.Domain.Entities
     public class GamePlayerStats
     {
 
-        //public int GamePlayerStatsId { get; set; } // ? Klucz złożony -> GameId + PlayerId
+        public int GamePlayerStatsId { get; set; } // ? Klucz złożony -> GameId + PlayerId
 
-        public int Points { get; set; }
-        public int TimeSpend  { get; set; }
-        public int Rebounds { get; set; }
+        public int? Points { get; set; }
+        public int? TimeSpend  { get; set; }
+        public int? Rebounds { get; set; }
         public int? OffensiveRebounds { get; set; }
         public int? DefensiveRebounds { get; set; }
-        public int Assists { get; set; }
-        public int Steals { get; set; }
-        public int Blocks { get; set; }
-        public int Turnovers { get; set; }
-        public int Fouls { get; set; }
+        public int? Assists { get; set; }
+        public int? Steals { get; set; }
+        public int? Blocks { get; set; }
+        public int? Turnovers { get; set; }
+        public int? Fouls { get; set; }
 
-        public bool IsOnBench { get; set; }
+        public bool? IsOnBench { get; set; }
 
         public int GameId { get; set; }
         public Game Game { get; set; }
